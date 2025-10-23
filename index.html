@@ -4,82 +4,61 @@
     <meta charset="UTF-8">
     <title>H5P 成績分數顯示範例 (p5.js)</title>
     
-    <!-- 引入 p5.js 函式庫 -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>  -->
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script> 
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
-    <!-- 引入您的分數顯示邏輯 (必須在 p5.js 之後載入) -->
-    <!-- 確保 JS 檔案載入順序正確，以讓變數作用於全域範圍 [4] -->
     <script src="sketch.js"></script>
     
-<style>
-    /* 1. 調整 body 樣式：移除可能干擾置中的全高設定，並讓 H1 標題置中 */
-    body { 
-        margin: 0; 
-        text-align: center; /* 確保 H1 標題居中 */
-        font-family: Arial, sans-serif; /* */
-        padding-top: 20px; /* 給頂部標題留出一些空間 */
-    }
+    <style>
+        /* 讓內容置中方便查看 */
+        body { 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-height: 100vh; 
+            font-family: Arial, sans-serif;
+        }
+        
+        /* 新增：分數顯示的容器，用於設定相對定位 */
+        #scoreDisplayContainer {
+            margin-top: 20px;
+            /* 讓子元素可以進行絕對定位，實現重疊 */
+            position: relative; 
+            width: 800px; /* 寬度應與 iframe 相同 */
+            height: 600px; /* 高度應與 iframe 相同 */
+        }
 
-    /* 2. 關鍵修正：設置容器寬度並使用 margin: auto 實現水平置中 */
-    #overlay-container {
-    position: relative;
-    width: 800px; 
-    height: 600px; 
-    margin: 20px auto; 
-}
-    /* 3. iFrame 和 Canvas 保持絕對定位並完全重疊 */
-    #h5pIframe, canvas {
-        position: absolute; 
-        top: 0;
-        left: 0;
-        width: 100%; /* 確保它們填滿 800px 的容器 */
-        height: 100%;
-    }
+        /* 確保 iframe 在容器中是正常定位的 */
+        #h5pIframe {
+             /* 為了讓 Canvas 蓋住，可以將 iframe 的 z-index 設定為較低 */
+             z-index: 1; 
+        }
 
-    /* 4. p5.js 畫布預設隱藏 */
-    canvas {
-        z-index: 10; 
-        background-color: transparent; 
-        display: none; /* 初始隱藏 */
-        pointer-events: none; /* 允許點擊穿透到下面的 iFrame */
-    }
-    
-    /* 5. iFrame 保持在底部 */
-    #h5pIframe {
-        z-index: 1; 
-    }
-</style>
+        /* p5.js Canvas 會自動創建在 body 內。我們需要用 CSS 選取它，並將其定位到重疊的位置 */
+        /* p5.js 創建的 Canvas 會在父容器中成為第一個 Canvas 元素 */
+        #scoreDisplayContainer canvas {
+            position: absolute; /* 絕對定位，實現重疊 */
+            top: 0;
+            left: 0;
+            z-index: 10; /* 確保 Canvas 蓋在 iframe 上方 */
+            display: none; /* 預設隱藏 Canvas */
+        }
+        
+    </style>
 </head>
 <body>
-   <h1>H5P 互動與 p5.js 成績顯示</h1>
-
-    <!-- 將 id="h5pContainer" 修正為 id="overlay-container" -->
-    <div id="overlay-container"> 
-        <!-- 嵌入 H5P 匯出檔案 -->
+    <h1>H5P 互動與 p5.js 成績顯示</h1>
+    
+    <div id="scoreDisplayContainer">
         <iframe 
             id="h5pIframe" 
-            src="6.html" 
+            src="1.html" 
             width="800" 
             height="600" 
             style="border: 2px solid #ccc;">
         </iframe>
-    </div>
-
-    <!-- 分數將顯示在 p5.js 創建的 Canvas 上 -->
+        </div>
+    
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
